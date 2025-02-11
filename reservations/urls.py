@@ -10,7 +10,7 @@ urlpatterns = [
     path('restaurant/dashboard/', RestaurantDashboardView.as_view(), name='restaurant-dashboard'),
     path('customers/', CustomerListView.as_view(), name='customer-list'),
     path('restaurants/', RestaurantListView.as_view(), name='restaurant-list'),
-    path('tables/', TableListView.as_view(), name='table-list'),
+    path('restaurants/<int:restaurant_id>/tables/', TableListView.as_view(), name='table-list'),
     path('reservations/', ReservationListView.as_view(), name='reservation-list'),
     path('timeslots/', TimeSlotListView.as_view(), name='timeslot-list'),
 ]
