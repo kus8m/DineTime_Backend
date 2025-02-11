@@ -3,8 +3,6 @@ from rest_framework import serializers
 from .models import Reservation, Customer, Restaurant, Table, Timeslot, Payment
 from django.contrib.auth.hashers import make_password
 
-
-
 class CustomerSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
 

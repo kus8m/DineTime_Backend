@@ -29,6 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['192.168.1.68', 'localhost', '127.0.0.1', '0.0.0.0']
 
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'reservations',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -66,6 +69,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'table_reservations.urls'

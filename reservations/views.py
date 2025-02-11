@@ -1,7 +1,7 @@
-# reservations/views.py
 from rest_framework import generics, status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Customer, Restaurant, Reservation, Table, Timeslot
@@ -25,8 +25,10 @@ class RestaurantSignupView(generics.CreateAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
 
-# Login View (for both Customer and Restaurant)
-class LoginView(generics.GenericAPIView):
+# Login View for Customer and Restaurant
+class LoginView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request, *args, **kwargs):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -70,25 +72,30 @@ class RestaurantDashboardView(generics.ListCreateAPIView):
         restaurant = self.request.user
         serializer.save(restaurant=restaurant)
 
+# List of all Customers (Only Restaurant/Authorized Users)
 class CustomerListView(generics.ListAPIView):
     queryset = Customer.objects.all()  # Get all customers
     serializer_class = CustomerSerializer
 
+# List of all Restaurants (Only Restaurant/Authorized Users)
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()  # Get all restaurants
     serializer_class = RestaurantSerializer
-    
+
+# List of all Tables (Filter by restaurant_id)
 class TableListView(generics.ListAPIView):
     serializer_class = TableSerializer
 
     def get_queryset(self):
         restaurant_id = self.kwargs['restaurant_id']
         return Table.objects.filter(restaurant__id=restaurant_id)
-    
+
+# List of all Reservations
 class ReservationListView(generics.ListAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
-    
+
+# List of all Time Slots
 class TimeSlotListView(generics.ListAPIView):
     queryset = Timeslot.objects.all()
     serializer_class = TimeslotSerializer
